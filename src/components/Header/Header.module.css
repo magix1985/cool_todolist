@@ -1,0 +1,8 @@
+.main {
+    display: flex;
+    justify-content: center;
+    background-color: cadetblue;
+    font-size: 24px;
+    padding: 5px;
+    width: auto;
+}
