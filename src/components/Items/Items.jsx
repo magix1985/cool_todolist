@@ -11,6 +11,7 @@ class Items extends PureComponent {
       nextId: 0,
       item_count: 0,
       txtcolor: [],
+      txtstyle: [],
       subheader: 'Список ваших дел (пуст)'
     }
   }
@@ -32,6 +33,7 @@ class Items extends PureComponent {
     this.setState(state => ({
       items: [...state.items, newItem],
       txtcolor: [...state.txtcolor, "blue"],
+      txtstyle: [...state.txtstyle, s.text],
       nextId: state.nextId + 1,
       inputValue: '',
       item_count: state.item_count + 1,
@@ -54,18 +56,22 @@ class Items extends PureComponent {
 
   setNegative = (id) => {
     let cols=this.state.txtcolor.slice();
+    let st=this.state.txtstyle.slice();
     cols[id] = "red";
-    this.setState(state => ({txtcolor: cols}));
+    st[id] = s.text_negative;
+    this.setState(state => ({txtcolor: cols, txtstyle: st}));
   }
 
   setPositive = (id) => {
     let cols=this.state.txtcolor.slice();
+    let st=this.state.txtstyle.slice();
     cols[id] = "green";
-    this.setState(state => ({txtcolor: cols}));
+    st[id] = s.text_positive;
+    this.setState(state => ({txtcolor: cols, txtstyle: st}));
   }
 
   render() {
-    const { inputValue, items, txtcolor } = this.state;
+    const { inputValue, items, txtcolor, txtstyle } = this.state;
 
     return (
       <div className={s.main}>
@@ -86,6 +92,7 @@ class Items extends PureComponent {
               key={item.id}
               text={item.text}
               txtcolor={txtcolor[item.id]}
+              txtstyle={txtstyle[item.id]}
               handleDelete={() => { this.removeItem(item.id) }}
               setNegative={() => { this.setNegative(item.id) }}
               setPositive={() => { this.setPositive(item.id) }}
@@ -97,10 +104,10 @@ class Items extends PureComponent {
   }
 }
 
-const Item = ({ text, txtcolor, handleDelete, setNegative, setPositive }) => (
+const Item = ({ text, txtcolor, txtstyle, handleDelete, setNegative, setPositive }) => (
   <div className={s.item}>
     <img src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
-    <div className={s.text}>
+    <div className={txtstyle}>
       <font color={txtcolor}>{text}</font>
     </div>
     <img src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
