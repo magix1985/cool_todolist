@@ -52,6 +52,7 @@
 .item .text {
     padding:10px;
     width: 100%;
+    color: blue;
 }
 
 .item .text_negative {
