@@ -32,6 +32,15 @@
     border-radius: 0 8px 8px 0;
 }
 
+.ico {
+    border: none;
+    opacity: 0.7;
+}
+
+.ico:hover {
+    opacity: 1;
+}
+
 .button:hover {
     background-color: rgb(67, 139, 127);
 }

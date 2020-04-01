@@ -24,8 +24,7 @@ class Items extends PureComponent {
     const newItem = { text: inputValue, id: nextId }
     const newStyle = { style: s.text, id: nextId }
 
-    if (!inputValue)
-    {
+    if (!inputValue) {
       alert("Введите текст");
       return;
     }
@@ -57,13 +56,13 @@ class Items extends PureComponent {
     let st = this.state.txtstyle.slice();
     st.find(item => item.id === id).style = s.text_negative;
     this.setState(state => ({txtstyle: st}));
-}
+  }
 
   setPositive = (id) => {
     let st = this.state.txtstyle.slice();
     st.find(item => item.id === id).style = s.text_positive;
     this.setState(state => ({txtstyle: st}));
-}
+  }
 
   render() {
     const { inputValue, items } = this.state;
@@ -100,11 +99,11 @@ class Items extends PureComponent {
 
 const Item = ({ text, txtstyle, handleDelete, setNegative, setPositive }) => (
   <div className={s.item}>
-    <img src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
+    <img className={s.ico} src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
     <div className={txtstyle}>
       {text}
     </div>
-    <img src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
+    <img className={s.ico} src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
     <button className={s.button} onClick={handleDelete}>
       Удалить
     </button>
