@@ -99,11 +99,11 @@ class Items extends PureComponent {
 
 const Item = ({ text, txtstyle, handleDelete, setNegative, setPositive }) => (
   <div className={s.item}>
-    <img className={s.ico} src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
+    <img className={s.ico_negative} src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
     <div className={txtstyle}>
       {text}
     </div>
-    <img className={s.ico} src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
+    <img className={s.ico_positive} src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
     <button className={s.button} onClick={handleDelete}>
       Удалить
     </button>
