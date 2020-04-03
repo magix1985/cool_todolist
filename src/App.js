@@ -20,6 +20,9 @@ function App() {
       <div className="fig">
         <Items />
       </div>
+      <footer className="foot">
+        Создано © magix1985
+      </footer>
     </div>
   );
 }
