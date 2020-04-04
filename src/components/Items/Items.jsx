@@ -44,11 +44,15 @@ class Items extends PureComponent {
       items: state.items.filter(item => item.id !== id),
       txtstyle: state.txtstyle.filter(item => item.id !== id),
       item_count: state.item_count - 1,
-      subheader: 'Список ваших дел (' + (state.item_count - 1) + ')'
-    }))
+    }), () => this.updateSubHeader())
+  }
 
-    if (this.state.item_count === 1) {
+  updateSubHeader = () => {
+    if (this.state.item_count === 0) {
       this.setState(state => ({subheader: 'Список ваших дел (пуст)'}))
+    }
+    else {
+      this.setState(state => ({subheader: `Список ваших дел (${this.state.item_count})`}))
     }
   }
 
