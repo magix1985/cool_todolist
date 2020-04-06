@@ -32,8 +32,7 @@ class Items extends PureComponent {
       nextId: state.nextId + 1,
       inputValue: '',
       item_count: state.item_count + 1,
-      subheader: 'Список ваших дел (' + (state.item_count + 1) + ')'
-    }))
+    }), () => this.updateSubHeader())
   }
 
   removeItem = (id) => {
@@ -53,15 +52,11 @@ class Items extends PureComponent {
   }
 
   setNegative = (id) => {
-    let itemsCopy = this.state.items.map(u => Object.assign({}, u));
-    itemsCopy.find(item => item.id === id).status = 1;
-    this.setState(state => ({items: itemsCopy}));
+    this.setState(state => ({items: state.items.map(u => (u.id === id ? Object.assign(u, {status: 1}) : Object.assign({}, u)))}));
   }
 
   setPositive = (id) => {
-    let itemsCopy = this.state.items.map(u => Object.assign({}, u));
-    itemsCopy.find(item => item.id === id).status = 2;
-    this.setState(state => ({items: itemsCopy}));
+    this.setState(state => ({items: state.items.map(u => (u.id === id ? Object.assign(u, {status: 2}) : Object.assign({}, u)))}));
   }
 
   render() {
