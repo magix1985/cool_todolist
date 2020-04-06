@@ -83,20 +83,20 @@
     box-shadow: 0 0 7px rgb(0, 136, 84);
 }
 
-.item .text {
+.item .text_new {
     padding:10px;
     width: 100%;
     color: blue;
 }
 
-.item .text_negative {
+.item .text_neg {
     padding:10px;
     width: 100%;
     text-decoration: line-through;
     color: red;
 }
 
-.item .text_positive {
+.item .text_pos {
     padding:10px;
     width: 100%;
     text-decoration: line-through;

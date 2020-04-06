@@ -10,7 +10,6 @@ class Items extends PureComponent {
       items: [],
       nextId: 0,
       item_count: 0,
-      txtstyle: [],
       subheader: 'Список ваших дел (пуст)'
     }
   }
@@ -21,8 +20,7 @@ class Items extends PureComponent {
 
   addItem = () => {
     const { inputValue, nextId } = this.state
-    const newItem = { text: inputValue, id: nextId }
-    const newStyle = { style: s.text, id: nextId }
+    const newItem = { text: inputValue, id: nextId, status: 0 }
 
     if (!inputValue) {
       alert("Введите текст");
@@ -31,7 +29,6 @@ class Items extends PureComponent {
 
     this.setState(state => ({
       items: [...state.items, newItem],
-      txtstyle: [...state.txtstyle, newStyle],
       nextId: state.nextId + 1,
       inputValue: '',
       item_count: state.item_count + 1,
@@ -42,7 +39,6 @@ class Items extends PureComponent {
   removeItem = (id) => {
     this.setState(state => ({
       items: state.items.filter(item => item.id !== id),
-      txtstyle: state.txtstyle.filter(item => item.id !== id),
       item_count: state.item_count - 1,
     }), () => this.updateSubHeader())
   }
@@ -57,15 +53,15 @@ class Items extends PureComponent {
   }
 
   setNegative = (id) => {
-    let st = this.state.txtstyle.slice();
-    st.find(item => item.id === id).style = s.text_negative;
-    this.setState(state => ({txtstyle: st}));
+    let itemsCopy = this.state.items.map(u => Object.assign({}, u));
+    itemsCopy.find(item => item.id === id).status = 1;
+    this.setState(state => ({items: itemsCopy}));
   }
 
   setPositive = (id) => {
-    let st = this.state.txtstyle.slice();
-    st.find(item => item.id === id).style = s.text_positive;
-    this.setState(state => ({txtstyle: st}));
+    let itemsCopy = this.state.items.map(u => Object.assign({}, u));
+    itemsCopy.find(item => item.id === id).status = 2;
+    this.setState(state => ({items: itemsCopy}));
   }
 
   render() {
@@ -89,7 +85,7 @@ class Items extends PureComponent {
             items.map((item) => <Item
               key={item.id}
               text={item.text}
-              txtstyle={this.state.txtstyle.find(el => el.id === item.id).style}
+              status={item.status}
               handleDelete={() => { this.removeItem(item.id) }}
               setNegative={() => { this.setNegative(item.id) }}
               setPositive={() => { this.setPositive(item.id) }}
@@ -101,10 +97,10 @@ class Items extends PureComponent {
   }
 }
 
-const Item = ({ text, txtstyle, handleDelete, setNegative, setPositive }) => (
+const Item = ({ text, status, handleDelete, setNegative, setPositive }) => (
   <div className={s.item}>
     <img className={s.ico_negative} src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
-    <div className={txtstyle}>
+    <div className={(status === 0) ? s.text_new : (status === 1) ? s.text_neg : s.text_pos}>
       {text}
     </div>
     <img className={s.ico_positive} src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
