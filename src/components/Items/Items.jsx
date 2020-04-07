@@ -52,11 +52,19 @@ class Items extends PureComponent {
   }
 
   setNegative = (id) => {
-    this.setState(state => ({items: state.items.map(u => (u.id === id ? Object.assign(u, {status: 1}) : Object.assign({}, u)))}));
+    this.setState(state => ({
+      items: state.items.map(u =>
+        (u.id === id ? Object.assign(u, {status: 1}) : Object.assign({}, u))
+      )
+    }));
   }
 
   setPositive = (id) => {
-    this.setState(state => ({items: state.items.map(u => (u.id === id ? Object.assign(u, {status: 2}) : Object.assign({}, u)))}));
+    this.setState(state => ({
+      items: state.items.map(u =>
+        (u.id === id ? Object.assign(u, {status: 2}) : Object.assign({}, u))
+      )
+    }));
   }
 
   render() {
