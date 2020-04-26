@@ -12,15 +12,17 @@ class Items extends PureComponent {
       item_count: 0,
       subheader: 'Список ваших дел (пуст)'
     }
+  
+    this.textChange = this.textChange.bind(this);
   }
 
-  onChange = (e) => {
-    this.setState({ inputValue: e.target.value })
+  onChange = (ev) => {
+    this.setState({ inputValue: ev.target.value })
   }
 
   addItem = () => {
     const { inputValue, nextId } = this.state
-    const newItem = { text: inputValue, id: nextId, status: 0 }
+    const newItem = { text: inputValue, id: nextId, status: 0, active: false }
 
     if (!inputValue) {
       alert("Введите текст");
@@ -67,6 +69,32 @@ class Items extends PureComponent {
     }));
   }
 
+  activateEditMode = (id) => {
+    this.setState(state => ({
+      items: state.items.map(u =>
+        (u.id === id ? Object.assign(u, {active: true}) : Object.assign({}, u))
+      )
+    }));
+  }
+
+  deactivateEditMode = (id) => {
+    this.setState(state => ({
+      items: state.items.map(u =>
+        (u.id === id ? Object.assign(u, {active: false, text: u.text}) : Object.assign({}, u))
+      )
+    }));
+  }
+
+  textChange = (ev, id) => {
+    const value = ev.target.value;
+
+    this.setState(state => ({
+      items: state.items.map(u =>
+        (u.id === id ? Object.assign(u, {text: value}) : Object.assign({}, u))
+      )
+    }));
+  }
+
   render() {
     const { inputValue, items } = this.state;
 
@@ -89,9 +117,13 @@ class Items extends PureComponent {
               key={item.id}
               text={item.text}
               status={item.status}
-              handleDelete={() => { this.removeItem(item.id) }}
-              setNegative={() => { this.setNegative(item.id) }}
-              setPositive={() => { this.setPositive(item.id) }}
+              editMode={item.active}
+              handleDelete={ () => { this.removeItem(item.id) }}
+              setNegative={ () => { this.setNegative(item.id) }}
+              setPositive={ () => { this.setPositive(item.id) }}
+              activateEditMode={ () => { this.activateEditMode(item.id) }}
+              deactivateEditMode={ () => { this.deactivateEditMode(item.id) }}
+              textChange={ (ev) => { this.textChange(ev, item.id) } }
             />)
           }
         </div>
@@ -100,12 +132,19 @@ class Items extends PureComponent {
   }
 }
 
-const Item = ({ text, status, handleDelete, setNegative, setPositive }) => (
+const Item = ({ text, status, editMode, handleDelete, setNegative, setPositive, activateEditMode, deactivateEditMode, textChange }) => (
   <div className={s.item}>
     <img className={s.ico_negative} src="todo-negative.png" title="Провалено" onClick={setNegative}></img>
-    <div className={(status === 0) ? s.text_new : (status === 1) ? s.text_neg : s.text_pos}>
-      {text}
-    </div>
+      {editMode === false ? (
+        <div className={(status === 0) ? s.text_new : (status === 1) ? s.text_neg : s.text_pos}>
+          <span onClick={activateEditMode}>{text}</span>
+        </div>
+      ) : (
+        <div className={s.text_edit}>
+          <input onChange={textChange} className={s.text_edit} autoFocus={true} onBlur={deactivateEditMode}></input>
+        </div>
+      )
+    }
     <img className={s.ico_positive} src="todo-positive.png" title="Выполнено" onClick={setPositive}></img>
     <button className={s.button} onClick={handleDelete}>
       Удалить

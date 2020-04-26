@@ -103,6 +103,15 @@
     color: green;
 }
 
+.item .text_edit {
+    width: 99%;
+    color: rgb(196, 0, 196);
+    text-align: center;
+    height: 97%;
+    border: none;
+    font-size: 1rem;
+}
+
 .inp1 {
     border: 1px solid grey;
     height: 30px;
