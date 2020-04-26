@@ -88,9 +88,14 @@ class Items extends PureComponent {
   textChange = (ev, id) => {
     const value = ev.target.value;
 
+    if (!value) {
+      alert("Текст не должен быть пустым");
+      return;
+    }
+
     this.setState(state => ({
       items: state.items.map(u =>
-        (u.id === id ? Object.assign(u, {text: value}) : Object.assign({}, u))
+        (u.id === id ? Object.assign(u, {text: value, status: 0}) : Object.assign({}, u))
       )
     }));
   }
@@ -141,7 +146,7 @@ const Item = ({ text, status, editMode, handleDelete, setNegative, setPositive, 
         </div>
       ) : (
         <div className={s.text_edit}>
-          <input onChange={textChange} className={s.text_edit} autoFocus={true} onBlur={deactivateEditMode}></input>
+          <input onChange={textChange} className={s.text_edit} autoFocus={true} onBlur={deactivateEditMode} value={text}></input>
         </div>
       )
     }
