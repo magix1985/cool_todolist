@@ -10,7 +10,8 @@ class Items extends PureComponent {
       items: [],
       nextId: 0,
       item_count: 0,
-      subheader: 'Список ваших дел (пуст)'
+      subheader: 'Список ваших дел (пуст)',
+      savedValue: ''
     }
   
     this.textChange = this.textChange.bind(this);
@@ -70,32 +71,45 @@ class Items extends PureComponent {
   }
 
   activateEditMode = (id) => {
+    let saved;
+
+    for (let i = 0; i < this.state.items.length; i++) {
+      if (this.state.items[i].id === id) {
+        saved = this.state.items[i].text;
+        break;
+      }
+    }
+
     this.setState(state => ({
+      savedValue: saved,
       items: state.items.map(u =>
         (u.id === id ? Object.assign(u, {active: true}) : Object.assign({}, u))
       )
     }));
   }
 
-  deactivateEditMode = (id) => {
+  deactivateEditMode = (ev, id, status) => {
+    let value = ev.target.value;
+    let currStatus = 0;
+
+    if (!value) {
+      value = this.state.savedValue;
+      currStatus = status;
+    }
+
     this.setState(state => ({
       items: state.items.map(u =>
-        (u.id === id ? Object.assign(u, {active: false, text: u.text}) : Object.assign({}, u))
+        (u.id === id ? Object.assign(u, {active: false, text: value, status: currStatus}) : Object.assign({}, u))
       )
     }));
   }
 
   textChange = (ev, id) => {
-    const value = ev.target.value;
-
-    if (!value) {
-      alert("Текст не должен быть пустым");
-      return;
-    }
+    let value = ev.target.value;
 
     this.setState(state => ({
       items: state.items.map(u =>
-        (u.id === id ? Object.assign(u, {text: value, status: 0}) : Object.assign({}, u))
+        (u.id === id ? Object.assign(u, {text: value}) : Object.assign({}, u))
       )
     }));
   }
@@ -127,7 +141,7 @@ class Items extends PureComponent {
               setNegative={ () => { this.setNegative(item.id) }}
               setPositive={ () => { this.setPositive(item.id) }}
               activateEditMode={ () => { this.activateEditMode(item.id) }}
-              deactivateEditMode={ () => { this.deactivateEditMode(item.id) }}
+              deactivateEditMode={ (ev) => { this.deactivateEditMode(ev, item.id, item.status) }}
               textChange={ (ev) => { this.textChange(ev, item.id) } }
             />)
           }
